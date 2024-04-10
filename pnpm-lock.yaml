@@ -20,9 +20,6 @@ dependencies:
   '@tauri-apps/plugin-shell':
     specifier: '>=2.0.0-beta.0'
     version: 2.0.0-beta.2
-  '@vicons/material':
-    specifier: ^0.12.0
-    version: 0.12.0
   vue:
     specifier: ^3.3.4
     version: 3.4.21(typescript@5.4.2)
@@ -37,7 +34,7 @@ devDependencies:
   '@types/node':
     specifier: ^20.10.5
     version: 20.11.29
-  '@vicons/fluent':
+  '@vicons/material':
     specifier: ^0.12.0
     version: 0.12.0
   '@vitejs/plugin-vue':
@@ -372,6 +369,7 @@ packages:
     resolution: { integrity: sha512-Iu0Kno1vrD7zHQDxOmvweqLkAzjxEVqNhUIXBsZ8hu8Oak7/5VTPrxOEZXYC1nmrBVJp0ZcL2E7lSuuOVaE3+w== }
     cpu: [ arm64 ]
     os: [ linux ]
+    libc: [ glibc ]
     requiresBuild: true
     dev: true
     optional: true
@@ -380,6 +378,7 @@ packages:
     resolution: { integrity: sha512-C31QrW47llgVyrRjIwiOwsHFcaIwmkKi3PCroQY5aVq4H0A5v/vVVAtFsI1nfBngtoRpeREvZOkIhmRwUKkAdw== }
     cpu: [ arm64 ]
     os: [ linux ]
+    libc: [ musl ]
     requiresBuild: true
     dev: true
     optional: true
@@ -388,6 +387,7 @@ packages:
     resolution: { integrity: sha512-Oq90dtMHvthFOPMl7pt7KmxzX7E71AfyIhh+cPhLY9oko97Zf2C9tt/XJD4RgxhaGeAraAXDtqxvKE1y/j35lA== }
     cpu: [ riscv64 ]
     os: [ linux ]
+    libc: [ glibc ]
     requiresBuild: true
     dev: true
     optional: true
@@ -396,6 +396,7 @@ packages:
     resolution: { integrity: sha512-yUD/8wMffnTKuiIsl6xU+4IA8UNhQ/f1sAnQebmE/lyQ8abjsVyDkyRkWop0kdMhKMprpNIhPmYlCxgHrPoXoA== }
     cpu: [ x64 ]
     os: [ linux ]
+    libc: [ glibc ]
     requiresBuild: true
     dev: true
     optional: true
@@ -404,6 +405,7 @@ packages:
     resolution: { integrity: sha512-9RyNqoFNdF0vu/qqX63fKotBh43fJQeYC98hCaf89DYQpv+xu0D8QFSOS0biA7cGuqJFOc1bJ+m2rhhsKcw1hw== }
     cpu: [ x64 ]
     os: [ linux ]
+    libc: [ musl ]
     requiresBuild: true
     dev: true
     optional: true
@@ -474,6 +476,7 @@ packages:
     engines: { node: '>= 10' }
     cpu: [ arm64 ]
     os: [ linux ]
+    libc: [ glibc ]
     requiresBuild: true
     dev: true
     optional: true
@@ -483,6 +486,7 @@ packages:
     engines: { node: '>= 10' }
     cpu: [ arm64 ]
     os: [ linux ]
+    libc: [ musl ]
     requiresBuild: true
     dev: true
     optional: true
@@ -492,6 +496,7 @@ packages:
     engines: { node: '>= 10' }
     cpu: [ x64 ]
     os: [ linux ]
+    libc: [ glibc ]
     requiresBuild: true
     dev: true
     optional: true
@@ -501,6 +506,7 @@ packages:
     engines: { node: '>= 10' }
     cpu: [ x64 ]
     os: [ linux ]
+    libc: [ musl ]
     requiresBuild: true
     dev: true
     optional: true
@@ -601,13 +607,9 @@ packages:
       undici-types: 5.26.5
     dev: true
 
-  /@vicons/fluent@0.12.0:
-    resolution: { integrity: sha512-ATCiqPuiJ6RI5GBlD3BIpZ9Xw4MsCA4RpI5oR6MCti4quS4mX1Gp6N74FCzw7lgOj+80rV4HMKhZTVInwimpVQ== }
-    dev: true
-
   /@vicons/material@0.12.0:
     resolution: { integrity: sha512-chv1CYAl8P32P3Ycwgd5+vw/OFNc2mtkKdb1Rw4T5IJmKy6GVDsoUKV3N2l208HATn7CCQphZtuPDdsm7K2kmA== }
-    dev: false
+    dev: true
 
   /@vitejs/plugin-vue@5.0.4(vite@5.1.6)(vue@3.4.21):
     resolution: { integrity: sha512-WS3hevEszI6CEVEx28F8RjTX97k3KsrcY6kvTg7+Whm5y3oYvcqzVeGCU3hxSAn4uY2CLCkeokkGKpoctccilQ== }
