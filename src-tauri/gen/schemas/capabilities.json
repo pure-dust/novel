@@ -1,0 +1,52 @@
+{
+  "default": {
+    "identifier": "default",
+    "description": "Capability for the main window",
+    "local": true,
+    "windows": [
+      "main",
+      "setting"
+    ],
+    "permissions": [
+      "path:default",
+      "event:default",
+      "window:default",
+      "app:default",
+      "image:default",
+      "resources:default",
+      "menu:default",
+      "tray:default",
+      "global-shortcut:default",
+      "shell:allow-open",
+      "global-shortcut:allow-is-registered",
+      "global-shortcut:allow-register",
+      "global-shortcut:allow-unregister",
+      "global-shortcut:allow-register-all",
+      "global-shortcut:allow-unregister-all",
+      "fs:allow-exists",
+      "fs:allow-read-text-file",
+      "fs:allow-app-read-recursive",
+      "fs:allow-write-text-file",
+      "fs:allow-app-write-recursive",
+      "event:allow-listen",
+      "event:allow-emit",
+      "window:allow-start-dragging",
+      "window:allow-minimize",
+      "window:allow-hide",
+      "window:allow-show",
+      "window:allow-set-position",
+      "dialog:allow-open",
+      {
+        "identifier": "fs:scope",
+        "allow": [
+          {
+            "path": "$APPCONFIG/*"
+          },
+          {
+            "path": "$CONFIG/*"
+          }
+        ]
+      }
+    ]
+  }
+}
