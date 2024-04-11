@@ -1,28 +1,12 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod novel;
 mod setup;
-mod utils;
+mod command;
 
-use novel::Novel;
 use tauri::generate_handler;
-use utils::request;
 
-#[tauri::command(async)]
-fn init(path: String) -> Vec<String> {
-  let instance = Novel::new();
-  let mut novel = instance.lock().unwrap();
-  novel.decode(path);
-  novel.chapter()
-}
-
-#[tauri::command]
-fn chapter(title: String) -> String {
-  let instance = Novel::new();
-  let novel = instance.lock().unwrap();
-  novel.single(title)
-}
+use command::{init, chapter, request};
 
 fn main() {
   tauri::Builder::default()

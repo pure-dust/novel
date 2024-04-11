@@ -8,7 +8,9 @@ export default defineConfig(async () => ({
     alias: {
       "~main": resolve(__dirname, "pages/main"),
       "~setting": resolve(__dirname, "pages/config"),
-      "~utils": resolve(__dirname, "utils")
+      "~utils": resolve(__dirname, "utils"),
+      "~components": resolve(__dirname, "pages/components"),
+      "~assets": resolve(__dirname, "assets")
     }
   },
   clearScreen: true,

@@ -1,5 +1,5 @@
 import ConfigManager from "~utils/config";
-// import ShortcutManager from "~utils/shotcut";
+import ShortcutManager from "~utils/shortcut.ts";
 import CacheManager from "~utils/cache";
 import {appConfigDir} from "@tauri-apps/api/path";
 import {exists, mkdir} from "@tauri-apps/plugin-fs";
@@ -11,10 +11,10 @@ export default async function () {
   }
 
   let configManager = new ConfigManager()
-  // let shortcutManager = new ShortcutManager()
+  let shortcutManager = new ShortcutManager()
   let cacheManager = new CacheManager()
 
   await configManager.load()
-  // await shortcutManager.load()
+  await shortcutManager.load()
   await cacheManager.load()
 }

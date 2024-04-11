@@ -1,9 +1,10 @@
 import {BaseDirectory} from "@tauri-apps/api/path"
 import {exists, readTextFile} from "@tauri-apps/plugin-fs"
 
-import default_config from "../assets/default"
-import {writeFile} from "./utils"
+import default_config from "~assets/default"
+import {merge, writeFile} from "./utils"
 import Emitter from "./emit"
+import {emit} from "@tauri-apps/api/event";
 
 export default class ConfigManager extends Emitter {
   base = BaseDirectory.AppConfig
@@ -44,13 +45,18 @@ export default class ConfigManager extends Emitter {
   }
 
   update(config: Partial<Config>) {
-    this.config = Object.assign(this.config, config)
+    this.config = merge<Config>(this.config, config)
     this.write().then(() => {
       this.emit("update", config)
+      // noinspection JSIgnoredPromiseFromCall
+      emit("config-update", config)
     })
   }
 
-  get<T>(key: string) {
+  get<T extends Config>(key?: string) {
+    if (!key) {
+      return this.config as T
+    }
     let keys = key.split(".")
     let result = this.config
     for (let i = 0; i < keys.length; i++) {

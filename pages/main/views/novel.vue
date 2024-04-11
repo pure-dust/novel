@@ -11,7 +11,7 @@ import {open} from "@tauri-apps/plugin-dialog"
 import {filename} from "~utils/utils"
 
 import Novel, {NovelCache} from "~utils/novel"
-import ShortcutManager from "~utils/shotcut"
+import ShortcutManager from "~utils/shortcut.ts"
 import CacheManager from "~utils/cache"
 import ConfigManager from "~utils/config"
 

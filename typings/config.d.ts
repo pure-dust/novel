@@ -11,7 +11,8 @@ interface NovelConfig extends Record<string, any> {
     font_color: string,
     font_size: number
   }
-  regexp: string[]
+  regexp: string
+  regexp_options: string[]
 }
 
 interface ShortcutConfig extends Record<string, any> {

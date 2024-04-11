@@ -13,7 +13,7 @@ fn get_filename(url: &str) -> Option<String> {
       .and_then(|name| name.to_str().and_then(|name| Some(name.to_string())))
 }
 
-pub struct Novel {
+struct Novel {
   title: String,
   path: String,
   content: HashMap<String, String>,
@@ -86,3 +86,19 @@ impl Novel {
     self.content.get(&title).unwrap().to_string()
   }
 }
+
+#[tauri::command(async)]
+pub fn init(path: String) -> Vec<String> {
+  let instance = Novel::new();
+  let mut novel = instance.lock().unwrap();
+  novel.decode(path);
+  novel.chapter()
+}
+
+#[tauri::command]
+pub fn chapter(title: String) -> String {
+  let instance = Novel::new();
+  let novel = instance.lock().unwrap();
+  novel.single(title)
+}
+

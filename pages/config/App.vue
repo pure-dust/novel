@@ -1,31 +1,35 @@
 <template>
-  <n-config-provider class="main" :theme="darkTheme">
-    <div data-tauri-drag-region class="header">
-      <n-button-group size="medium">
-        <n-button tertiary :bordered="false" :focusable="false" :theme-overrides="buttonTheme" @click="onMinimize">
-          <template #icon>
-            <n-icon>
-              <MinusRound/>
-            </n-icon>
-          </template>
-        </n-button>
-        <n-button tertiary :bordered="false" :focusable="false" type="error" :theme-overrides="buttonTheme"
-                  @click="onClose">
-          <template #icon>
-            <n-icon>
-              <CloseRound/>
-            </n-icon>
-          </template>
-        </n-button>
-      </n-button-group>
-    </div>
-    <div class="body">
-      <setting/>
-    </div>
+  <n-config-provider class="main" :theme="darkTheme" :locale="zhCN" :date-locale="dateZhCN">
+    <n-message-provider>
+      <div data-tauri-drag-region class="header">
+        <n-button-group size="medium">
+          <n-button tertiary :bordered="false" :focusable="false" :theme-overrides="buttonTheme" @click="onMinimize">
+            <template #icon>
+              <n-icon>
+                <MinusRound/>
+              </n-icon>
+            </template>
+          </n-button>
+          <n-button tertiary :bordered="false" :focusable="false" type="error" :theme-overrides="buttonTheme"
+                    @click="onClose">
+            <template #icon>
+              <n-icon>
+                <CloseRound/>
+              </n-icon>
+            </template>
+          </n-button>
+        </n-button-group>
+      </div>
+      <div class="body">
+        <setting/>
+      </div>
+    </n-message-provider>
   </n-config-provider>
 </template>
 <script setup lang="ts">
-import {NIcon, NConfigProvider, darkTheme, NButton, NButtonGroup, ButtonProps} from "naive-ui"
+import {NIcon, NConfigProvider, darkTheme, NButton, NButtonGroup, NMessageProvider} from "naive-ui"
+import {ButtonProps} from "naive-ui"
+import {zhCN, dateZhCN} from "naive-ui"
 import {MinusRound, CloseRound} from "@vicons/material"
 import setting from "./views/setting.vue"
 import {webviewWindow} from "@tauri-apps/api";
