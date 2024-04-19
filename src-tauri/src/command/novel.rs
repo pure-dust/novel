@@ -6,6 +6,7 @@ use std::{
   path::Path,
   sync::{Arc, Mutex},
 };
+use serde::Deserialize;
 
 fn get_filename(url: &str) -> Option<String> {
   Path::new(&url)
@@ -18,6 +19,13 @@ struct Novel {
   path: String,
   content: HashMap<String, String>,
   chapter: Vec<String>,
+  regex: String,
+}
+
+#[derive(Deserialize)]
+pub struct NovelConfig {
+  path: String,
+  regexp: Option<String>,
 }
 
 impl Novel {
@@ -31,10 +39,15 @@ impl Novel {
               path: String::from(""),
               content: HashMap::new(),
               chapter: Vec::new(),
+              regex: r"第[零一二三四五六七八九十百千万0-9]+章[\s|：]*[?s:.]*".to_string(),
             }))
           })
           .clone()
     }
+  }
+
+  pub fn set_regex(&mut self, regexp: String) {
+    self.regex = regexp
   }
 
   pub fn decode(&mut self, path: String) {
@@ -43,7 +56,7 @@ impl Novel {
     let title = get_filename(&path).unwrap_or_default();
     self.path = path.clone();
     self.title = title;
-    let regex = Regex::new(r"第[零一二三四五六七八九十百千万0-9]+章[\s|：]*[?s:.]*").unwrap();
+    let regex = Regex::new(&self.regex).unwrap_or(Regex::new(r"第[零一二三四五六七八九十百千万0-9]+章[\s|：]*[?s:.]*").unwrap());
     let file = File::open(path);
     let mut title = String::from("");
     let mut chapter = String::from("");
@@ -88,10 +101,13 @@ impl Novel {
 }
 
 #[tauri::command(async)]
-pub fn init(path: String) -> Vec<String> {
+pub fn init(config: NovelConfig) -> Vec<String> {
   let instance = Novel::new();
   let mut novel = instance.lock().unwrap();
-  novel.decode(path);
+  if config.regexp.is_some() {
+    novel.set_regex(config.regexp.unwrap())
+  }
+  novel.decode(config.path);
   novel.chapter()
 }
 

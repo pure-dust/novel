@@ -1,50 +1,75 @@
 <!--suppress ALL -->
 <script setup lang="ts">
-import {NSelect, NButton, NIcon, NFlex, SelectOption} from "naive-ui"
-import {PlusRound, DeleteRound} from "@vicons/material"
-import {h, VNode, ref} from "vue"
+import {NSelect, NButton, NIcon, NFlex, NModal, NList, NListItem, NCard, NScrollbar, NInput} from "naive-ui"
+import {PlusRound} from "@vicons/material"
+import space from "./space.vue"
+import {ref} from "vue"
 
 const model = defineModel<string>()
 const options = defineModel<string[]>("options")
-const selectRef = ref<HTMLInputElement>()
+const emit = defineEmits<{
+  (e: "update"): void
+}>()
 
-const renderOption = ({node, option, selected}: { node: VNode, option: SelectOption, selected: boolean }) => {
-  return h("div", {
-    class: "custom-option", onClick: () => {
-      node.props.onClick()
-    }
-  }, [
-    h("div", {class: "label"}, option.label),
-    h(NButton, {
-      type: "error", size: "tiny", ghost: true, style: "position: relative; left: 4px;", onClick: (event) => {
-        selectRef.value?.blurInput()
-        let index = options.value?.findIndex(item => item === options.value)
-        options.value?.splice(index, 1)
-        if (selected) {
-          console.log(selected)
-          model.value = ""
-        }
-        event.stopPropagation()
-      }
-    }, {
-      icon: () => h(NIcon, {}, {default: () => h(DeleteRound)})
-    })
-  ])
+const showModal = ref(false)
+const inputValue = ref("")
+const isAddNew = ref(false)
+
+const onNewConfirm = () => {
+  console.log(inputValue.value)
+  isAddNew.value = false
+  options.value?.push(inputValue.value)
+  inputValue.value = ""
 }
 
+const onDelete = (index: number) => {
+  if (model.value === options.value?.[index]!) {
+    model.value = ""
+  }
+  options.value?.splice(index, 1)
+}
+
+const onSubmit = () => {
+  emit('update')
+  showModal.value = false
+}
 </script>
 
 <template>
   <n-flex :wrap="false">
-    <n-select ref="selectRef" v-model="model" :options="options.map(item => ({ label: item, value: item }))"
-              :render-option="renderOption"
+    <n-select v-model:value="model" :options="options?.map(item => ({ label: item, value: item }))"
     ></n-select>
-    <n-button>
+    <n-button @click="showModal = true">
       <n-icon>
         <PlusRound/>
       </n-icon>
     </n-button>
   </n-flex>
+  <n-modal v-model:show="showModal" transform-origin="center">
+    <n-card title="正则条件管理" :bordered="false">
+      <template #header-extra>
+        <n-button type="primary" @click="isAddNew = true" size="small">新增</n-button>
+      </template>
+      <n-scrollbar style="max-height: 200px;">
+        <n-input placeholder="请输入正则表达式，按回车结束" v-show="isAddNew" v-model:value="inputValue"
+                 @keydown.enter="onNewConfirm"></n-input>
+        <space v-show="isAddNew" space="10"/>
+        <n-list hoverable>
+          <n-list-item v-for="(item,i) in options">
+            {{ item }}
+            <template #suffix>
+              <n-button type="error" size="small" @click="onDelete(i)">删除</n-button>
+            </template>
+          </n-list-item>
+        </n-list>
+      </n-scrollbar>
+      <space space="10"/>
+      <n-flex justify="center">
+        <n-button @click="showModal = false">取消</n-button>
+        <n-button type="primary" @click="onSubmit">确定</n-button>
+      </n-flex>
+    </n-card>
+  </n-modal>
 </template>
 
 <style scoped lang="less">

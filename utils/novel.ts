@@ -17,7 +17,7 @@ export interface NovelCache {
 
 
 export default class Novel {
-  private config: NovelConfig = {path: '', count: 30, chapter: -1, line: -1}
+  private readonly config: NovelConfig = {path: '', count: 30, chapter: -1, line: -1}
   private chapters: Array<string> = []
   private cur_chapter: number = -1
   private cur_line: number = -1
@@ -47,6 +47,16 @@ export default class Novel {
     return this.cur_line + 1 > this.lines.length - 1 && this.cur_chapter < this.chapters.length - 1
   }
 
+  private async parse_chapter() {
+    try {
+      this.cur_content = await invoke<string>("chapter", {title: this.chapters[this.cur_chapter]})
+      this.parse_line()
+      this.cur_line = 0
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   private parse_line() {
     this.lines = []
     this.lines.push(this.chapters[this.cur_chapter] + "\n")
@@ -65,6 +75,7 @@ export default class Novel {
   private update() {
     emit("change-tip", {name: filename(this.config.path), chapter: this.cur_chapter, line: this.cur_line})
   }
+
 
   async init() {
     try {
@@ -88,13 +99,7 @@ export default class Novel {
       this.cur_chapter = 0
       return ""
     }
-    try {
-      this.cur_content = await invoke<string>("chapter", {title: this.chapters[this.cur_chapter]})
-      this.parse_line()
-      this.cur_line = 0
-    } catch (error) {
-      console.error(error);
-    }
+    await this.parse_chapter()
     this.update()
     return this.lines[this.cur_line]
   }
@@ -105,13 +110,7 @@ export default class Novel {
       this.cur_chapter = this.chapters.length - 1
       return ""
     }
-    try {
-      this.cur_content = await invoke<string>("chapter", {title: this.chapters[this.cur_chapter]})
-      this.parse_line()
-      this.cur_line = 0
-    } catch (error) {
-      console.error(error);
-    }
+    await this.parse_chapter()
     this.update()
     return this.lines[this.cur_line]
   }

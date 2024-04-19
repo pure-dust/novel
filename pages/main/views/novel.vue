@@ -27,7 +27,7 @@ let path: string
 
 const init_theme = () => {
   fontColor.value = configManager.get<string>("novel.font_color")
-  fontSize.value = configManager.get<number>("novel.font_Size") + "px"
+  fontSize.value = configManager.get<number>("novel.font_size") + "px"
 }
 
 const init_novel = () => {

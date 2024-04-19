@@ -1,5 +1,5 @@
 export default class LoopQueue<T> {
-  private origin: T[]
+  private readonly origin: T[]
   private current: number = -1
 
   constructor(init: T[]) {

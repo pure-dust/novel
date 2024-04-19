@@ -1,7 +1,7 @@
 import {register, isRegistered, unregister} from "@tauri-apps/plugin-global-shortcut"
 import Emitter from "./emit";
 import ConfigManager from "./config";
-import {emit, listen} from "@tauri-apps/api/event";
+import {emit} from "@tauri-apps/api/event";
 
 export default class ShortcutManager extends Emitter {
   shortcut: Map<string, string> = new Map()
@@ -13,17 +13,8 @@ export default class ShortcutManager extends Emitter {
     super()
     if (!ShortcutManager.instance) {
       ShortcutManager.instance = this
-      // noinspection JSIgnoredPromiseFromCall
-      listen<Partial<Config>>("config-update", ({payload: config}) => {
-        if (config.shortcut) {
-          for (const key in config.shortcut) {
-            // noinspection JSIgnoredPromiseFromCall
-            this.update(key, config.shortcut[key])
-          }
-        }
-      })
       this.config.on<Partial<Config>>("update", (config) => {
-        if (config.shortcut) {
+        if (config.shortcut && Object.keys(config).length === 1) {
           for (const key in config.shortcut) {
             // noinspection JSIgnoredPromiseFromCall
             this.update(key, config.shortcut[key])

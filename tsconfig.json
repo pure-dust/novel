@@ -45,7 +45,8 @@
     "pages/**/*.d.ts",
     "pages/**/*.tsx",
     "pages/**/*.vue",
-    "typings/**/*.d.ts"
+    "typings/**/*.d.ts",
+    "assets/**/*.ts"
   ],
   "references": [
     {

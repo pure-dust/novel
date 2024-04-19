@@ -23,8 +23,8 @@ export const config: ConfigItem[] = [
     name: "小说",
     prop: "novel",
     items: [
-      {name: "字体颜色", type: "input", prop: "font_color"},
-      {name: "字体大小", type: "input", prop: "font_size"},
+      {name: "字体颜色", type: "color", prop: "font_color"},
+      {name: "字体大小", type: "number", prop: "font_size"},
       {name: "章节正则", type: "select", prop: "regexp"},
     ],
   },

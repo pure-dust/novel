@@ -7,10 +7,8 @@ interface ThemeConfig extends Record<string, any> {
 }
 
 interface NovelConfig extends Record<string, any> {
-  theme: {
-    font_color: string,
-    font_size: number
-  }
+  font_color: string,
+  font_size: number
   regexp: string
   regexp_options: string[]
 }
@@ -32,9 +30,9 @@ interface OtherConfig {
 }
 
 interface Config extends Record<string, any> {
-  app: AppConfig
-  theme: ThemeConfig
-  novel: NovelConfig
-  shortcut: ShortcutConfig
-  other: OtherConfig
+  app: Partial<AppConfig>
+  theme: Partial<ThemeConfig>
+  novel: Partial<NovelConfig>
+  shortcut: Partial<ShortcutConfig>
+  other: Partial<OtherConfig>
 }
