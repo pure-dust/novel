@@ -76,7 +76,6 @@ export default class Novel {
     emit("change-tip", {name: filename(this.config.path), chapter: this.cur_chapter, line: this.cur_line})
   }
 
-
   async init() {
     try {
       this.chapters = await invoke("init", {config: {path: this.config.path}})
