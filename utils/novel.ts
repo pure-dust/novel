@@ -79,7 +79,7 @@ export default class Novel {
 
   async init() {
     try {
-      this.chapters = await invoke("init", {path: this.config.path})
+      this.chapters = await invoke("init", {config: {path: this.config.path}})
       if (this.cur_line >= 0 && this.cur_chapter >= 0) {
         this.cur_content = await invoke<string>("chapter", {title: this.chapters[this.cur_chapter]})
         this.parse_line()
