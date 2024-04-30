@@ -9,30 +9,13 @@
     "frontendDist": "../dist"
   },
   "app": {
-    "windows": [
-      {
-        "label": "main",
-        "fullscreen": false,
-        "resizable": false,
-        "title": "novel",
-        "width": 400,
-        "height": 30,
-        "center": true,
-        "decorations": false,
-        "transparent": true,
-        "shadow": false,
-        "skipTaskbar": true,
-        "alwaysOnTop": true
-      }
-    ],
+    "windows": [],
     "security": {
       "csp": null
     }
   },
   "bundle": {
-    "resources": [
-      "icons/icon.ico"
-    ],
+    "resources": ["icons/icon.ico"],
     "active": true,
     "targets": "all",
     "icon": [

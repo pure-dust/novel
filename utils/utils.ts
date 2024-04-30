@@ -1,24 +1,13 @@
 import {BaseDirectory} from "@tauri-apps/api/path"
 import {create, exists, writeTextFile} from "@tauri-apps/plugin-fs"
 
+
 type MergeObject =
-    Record<string, string | number | boolean | Function | Array<MergeObject> | MergeObject>
+    Record<string, string | number | boolean | Function | Array<MergeObject> | Record<string, {
+      [key: string]: MergeObject | undefined
+    }> | undefined>
     | Array<MergeObject>
 
-export async function request<T>(url: string, type?: XMLHttpRequestResponseType) {
-  return new Promise<T>((resolve, reject) => {
-    let XHR = new XMLHttpRequest()
-    XHR.responseType = type || "json"
-    XHR.onload = () => {
-      return resolve(XHR.response)
-    }
-    XHR.onerror = () => {
-      return reject()
-    }
-    XHR.open("get", url)
-    XHR.send()
-  })
-}
 
 export async function writeFile(path: string, data: string, baseDir = BaseDirectory.AppConfig) {
   if (!await exists(path, {baseDir})) {
@@ -32,7 +21,7 @@ export function filename(path: string) {
   return path.split(reg).at(-1)?.split(".")?.[0] || path
 }
 
-export function merge<T extends MergeObject>(target: MergeObject, source: MergeObject) {
+export function merge<T extends MergeObject>(target: any, source: any) {
   for (const key in source) {
     if (typeof target[key] === "undefined") {
       target[key] = source[key]

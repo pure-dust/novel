@@ -4,13 +4,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import {ref} from "vue"
-import {getCurrent} from "@tauri-apps/api/window"
-import {listen} from "@tauri-apps/api/event"
-import {open} from "@tauri-apps/plugin-dialog"
-import {filename} from "~utils/utils"
+import { ref } from "vue"
+import { getCurrent } from "@tauri-apps/api/window"
+import { listen } from "@tauri-apps/api/event"
+import { open } from "@tauri-apps/plugin-dialog"
+import { filename } from "~utils/utils"
 
-import Novel, {NovelCache} from "~utils/novel"
+import Novel, { NovelCache } from "~utils/novel"
 import ShortcutManager from "~utils/shortcut.ts"
 import CacheManager from "~utils/cache"
 import ConfigManager from "~utils/config"
@@ -40,6 +40,7 @@ const init_novel = () => {
     path: path,
     chapter: cacheManager.get<number>(`novel.${file.value}.chapter`) ?? -1,
     line: cacheManager.get<number>(`novel.${file.value}.line`) ?? -1,
+    regexp: configManager.get<string>("novel.regexp"),
   })
 
   cacheManager.update(`novel`, {
@@ -52,16 +53,16 @@ const move = async (dir: string) => {
   let origin = await window.outerPosition()
   switch (dir) {
     case "up":
-      window.setPosition({x: origin.x, y: origin.y - 1, type: origin.type})
+      window.setPosition({ x: origin.x, y: origin.y - 1, type: origin.type })
       break
     case "left":
-      window.setPosition({x: origin.x - 1, y: origin.y, type: origin.type})
+      window.setPosition({ x: origin.x - 1, y: origin.y, type: origin.type })
       break
     case "right":
-      window.setPosition({x: origin.x + 1, y: origin.y, type: origin.type})
+      window.setPosition({ x: origin.x + 1, y: origin.y, type: origin.type })
       break
     case "down":
-      window.setPosition({x: origin.x, y: origin.y + 1, type: origin.type})
+      window.setPosition({ x: origin.x, y: origin.y + 1, type: origin.type })
       break
     default:
       break

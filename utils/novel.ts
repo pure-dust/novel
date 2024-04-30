@@ -1,12 +1,13 @@
-import {invoke} from "@tauri-apps/api/core"
-import {emit} from "@tauri-apps/api/event"
-import {filename} from "./utils"
+import { invoke } from "@tauri-apps/api/core"
+import { emit } from "@tauri-apps/api/event"
+import { filename } from "./utils"
 
 interface NovelConfig {
   path: string
   count: number
   chapter: number
   line: number
+  regexp: string
 }
 
 export interface NovelCache {
@@ -17,7 +18,10 @@ export interface NovelCache {
 
 
 export default class Novel {
-  private readonly config: NovelConfig = {path: '', count: 30, chapter: -1, line: -1}
+  private readonly config: NovelConfig = {
+    path: '', count: 30, chapter: -1, line: -1,
+    regexp: ""
+  }
   private chapters: Array<string> = []
   private cur_chapter: number = -1
   private cur_line: number = -1
@@ -49,7 +53,7 @@ export default class Novel {
 
   private async parse_chapter() {
     try {
-      this.cur_content = await invoke<string>("chapter", {title: this.chapters[this.cur_chapter]})
+      this.cur_content = await invoke<string>("chapter", { title: this.chapters[this.cur_chapter] })
       this.parse_line()
       this.cur_line = 0
     } catch (error) {
@@ -60,7 +64,7 @@ export default class Novel {
   private parse_line() {
     this.lines = []
     this.lines.push(this.chapters[this.cur_chapter] + "\n")
-    const {count} = this.config
+    const { count } = this.config
     this.cur_content.split(/\n/).forEach(c => {
       let i = 0
       let s = c.slice(i * count, (i + 1) * count)
@@ -73,14 +77,14 @@ export default class Novel {
   }
 
   private update() {
-    emit("change-tip", {name: filename(this.config.path), chapter: this.cur_chapter, line: this.cur_line})
+    emit("change-tip", { name: filename(this.config.path), chapter: this.cur_chapter, line: this.cur_line })
   }
 
   async init() {
     try {
-      this.chapters = await invoke("init", {config: {path: this.config.path}})
+      this.chapters = await invoke("init", { config: { path: this.config.path, regexp: this.config.regexp } })
       if (this.cur_line >= 0 && this.cur_chapter >= 0) {
-        this.cur_content = await invoke<string>("chapter", {title: this.chapters[this.cur_chapter]})
+        this.cur_content = await invoke<string>("chapter", { title: this.chapters[this.cur_chapter] })
         this.parse_line()
         this.update()
       }
@@ -115,6 +119,7 @@ export default class Novel {
   }
 
   async prev_line() {
+    debugger
     if (this.cur_line === -1) {
       return ""
     }
