@@ -142,12 +142,15 @@ listen("select", async () => {
   if (!result) return
   line.value = filename(result.name || "")
   file.value = line.value
+  await cacheManager.reload()
+  await configManager.reload()
   let cache = cacheManager.get<NovelCache>(`novel.${file.value}`)
 
   novel = new Novel({
     path: result.path,
     chapter: cache?.chapter ?? -1,
     line: cache?.line ?? -1,
+    regexp: configManager.get<string>("novel.regexp"),
   })
 
   cacheManager.update(`novel.${file.value}`, {
