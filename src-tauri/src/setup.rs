@@ -48,11 +48,13 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
   let quit = MenuItemBuilder::with_id("quit", "退出").build(app).unwrap();
   let config = SubmenuBuilder::new(app.handle(), "配置文件").items(&[
     &MenuItemBuilder::with_id("vscode_config", "使用vscode打开").build(app).unwrap(),
-    &MenuItemBuilder::with_id("notepad_config", "使用记事本打开").build(app).unwrap()
+    &MenuItemBuilder::with_id("notepad_config", "使用记事本打开").build(app).unwrap(),
+    &MenuItemBuilder::with_id("config_dir", "打开文件目录").build(app).unwrap()
   ]).build().unwrap();
   let cache = SubmenuBuilder::new(app.handle(), "缓存文件").items(&[
     &MenuItemBuilder::with_id("vscode_cache", "使用vscode打开").build(app).unwrap(),
-    &MenuItemBuilder::with_id("notepad_cache", "使用记事本打开").build(app).unwrap()
+    &MenuItemBuilder::with_id("notepad_cache", "使用记事本打开").build(app).unwrap(),
+    &MenuItemBuilder::with_id("cache_dir", "打开文件目录").build(app).unwrap()
   ]).build().unwrap();
   let select = MenuItemBuilder::with_id("select", "选择书籍")
     .build(app)
@@ -89,9 +91,16 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         let path = app.path().app_config_dir().unwrap().join("cache");
         exec_command(&["notepad", path.to_str().unwrap()])
       }
+      "config_dir" => {
+        let path = app.path().app_config_dir().unwrap();
+        exec_command(&["start", path.to_str().unwrap()])
+      }
+      "cache_dir" => {
+        let path = app.path().app_config_dir().unwrap();
+        exec_command(&["start", path.to_str().unwrap()])
+      }
       "setting" => {
-        let setting = app.get_webview_window("setting");
-        match setting {
+        match app.get_webview_window("setting") {
           Some(setting_window) => {
             let visible = setting_window.is_visible().unwrap();
             if visible {
