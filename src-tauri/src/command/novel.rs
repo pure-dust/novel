@@ -1,4 +1,5 @@
 use regex::Regex;
+use serde::Deserialize;
 use std::{
   collections::HashMap,
   fs::File,
@@ -6,15 +7,14 @@ use std::{
   path::Path,
   sync::{Arc, Mutex},
 };
-use serde::Deserialize;
 
 fn get_filename(url: &str) -> Option<String> {
   Path::new(&url)
-      .file_name()
-      .and_then(|name| name.to_str().and_then(|name| Some(name.to_string())))
+    .file_name()
+    .and_then(|name| name.to_str().and_then(|name| Some(name.to_string())))
 }
 
-struct Novel {
+pub struct Novel {
   title: String,
   path: String,
   content: HashMap<String, String>,
@@ -33,16 +33,16 @@ impl Novel {
     static mut INSTANCE: Option<Arc<Mutex<Novel>>> = None;
     unsafe {
       INSTANCE
-          .get_or_insert_with(|| {
-            Arc::new(Mutex::new(Novel {
-              title: String::from(""),
-              path: String::from(""),
-              content: HashMap::new(),
-              chapter: Vec::new(),
-              regex: r"第[零一二三四五六七八九十百千万0-9]+章[\s|：]*[?s:.]*".to_string(),
-            }))
-          })
-          .clone()
+        .get_or_insert_with(|| {
+          Arc::new(Mutex::new(Novel {
+            title: String::from(""),
+            path: String::from(""),
+            content: HashMap::new(),
+            chapter: Vec::new(),
+            regex: r"第[零一二三四五六七八九十百千万0-9]+章[\s|：]*[?s:.]*".to_string(),
+          }))
+        })
+        .clone()
     }
   }
 

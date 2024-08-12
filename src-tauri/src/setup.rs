@@ -1,20 +1,23 @@
 use std::fmt::Debug;
 use std::process::Command;
 
-use tauri::{
-  App,
-  image::Image,
-  Manager,
-  menu::{MenuBuilder, MenuItemBuilder},
-  path::BaseDirectory, PhysicalSize, tray::{ClickType, TrayIconBuilder},
-};
 use tauri::menu::SubmenuBuilder;
+use tauri::{
+  image::Image,
+  menu::{MenuBuilder, MenuItemBuilder},
+  path::BaseDirectory,
+  tray::{ClickType, TrayIconBuilder},
+  App, Manager, PhysicalSize,
+};
+
+
+use crate::command::Novel;
 
 #[derive(Debug, serde::Deserialize)]
 struct TooltipPayload {
   name: String,
-  chapter: i32,
-  line: i32,
+  chapter: usize,
+  line: usize,
 }
 
 fn exec_command(command_str: &[&str]) {
@@ -145,9 +148,12 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 
   app.listen("change-tip", move |event| {
     let data: TooltipPayload = serde_json::from_str(event.payload()).unwrap();
+    let instance = Novel::new();
+    let novel = instance.lock().unwrap();
+    let process = (data.chapter as f64 / novel.chapter().len() as f64) * 100.0;
     let tooltip = format!(
-      "书名: {}\n章节: {}\n行数: {}",
-      data.name, data.chapter, data.line
+      "书名: {}\n章节: {}\n行数: {}\n进度: {}%",
+      data.name, data.chapter, data.line, format!("{:.2}", process)
     );
     tray.set_tooltip(Some(tooltip)).unwrap();
   });
