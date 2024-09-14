@@ -27,6 +27,7 @@
     "fs:allow-app-read-recursive",
     "fs:allow-write-text-file",
     "fs:allow-app-write-recursive",
+    "fs:allow-remove",
     "event:allow-listen",
     "event:allow-emit",
     "window:allow-start-dragging",
@@ -34,6 +35,7 @@
     "window:allow-hide",
     "window:allow-show",
     "window:allow-set-position",
+    "window:allow-close",
     "dialog:allow-open",
     {
       "identifier": "fs:scope",

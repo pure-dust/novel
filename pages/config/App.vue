@@ -27,10 +27,18 @@
   </n-config-provider>
 </template>
 <script setup lang="ts">
-import {NIcon, NConfigProvider, darkTheme, NButton, NButtonGroup, NMessageProvider} from "naive-ui"
-import {ButtonProps} from "naive-ui"
-import {zhCN, dateZhCN} from "naive-ui"
-import {MinusRound, CloseRound} from "@vicons/material"
+import {
+  ButtonProps,
+  darkTheme,
+  dateZhCN,
+  NButton,
+  NButtonGroup,
+  NConfigProvider,
+  NIcon,
+  NMessageProvider,
+  zhCN
+} from "naive-ui"
+import {CloseRound, MinusRound} from "@vicons/material"
 import setting from "./views/setting.vue"
 import {webviewWindow} from "@tauri-apps/api";
 
@@ -43,7 +51,7 @@ const onMinimize = () => {
 }
 
 const onClose = () => {
-  webviewWindow.getCurrent().hide()
+  webviewWindow.getCurrent().close()
 }
 
 </script>

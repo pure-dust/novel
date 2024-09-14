@@ -46,6 +46,8 @@ export const config: ConfigItem[] = [
   {
     name: "其他",
     prop: "other",
-    items: [],
+    items: [
+      {name: "缓存管理", type: "button", prop: "cache"}
+    ],
   },
 ]

@@ -36,3 +36,20 @@ interface Config extends Record<string, any> {
   shortcut: Partial<ShortcutConfig>
   other: Partial<OtherConfig>
 }
+
+interface NovelItemCache extends Record<string, string | number> {
+  path: string
+  chapter: number
+  line: number
+}
+
+interface NovelCache {
+  last?: string,
+
+  [key: string]: NovelItemCache | string
+}
+
+
+interface AppCache {
+  novel: NovelCache
+}
