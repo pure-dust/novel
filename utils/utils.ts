@@ -16,7 +16,10 @@ export async function writeFile(path: string, data: string, baseDir = BaseDirect
   await writeTextFile(path, data, {baseDir})
 }
 
-export function filename(path: string) {
+export function filename(path?: string) {
+  if(!path) {
+    return path
+  }
   let reg = /[\\|/]/
   return path.split(reg).at(-1)?.split(".")?.[0] || path
 }

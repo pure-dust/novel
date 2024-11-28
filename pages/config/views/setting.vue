@@ -52,26 +52,26 @@
         <n-scrollbar style="max-height: 200px">
           <n-list hoverable>
             <n-list-item>
-              上次看到：{{ filename(cacheData['last']) }}
+              上次看到：{{ filename(cacheData?.['last']) }}
             </n-list-item>
             <template v-for="(item, key) in cacheData">
               <n-list-item v-if="key !=='last'">
                 <template v-if="key !=='last'">
                   <div style="display: flex">
                     <span style="flex: 1">{{ key }}</span>
-                    <span style="width: 80px">第{{ item.chapter + 1 }}章</span>
-                    <span style="width: 80px">第{{ item.line + 1 }}行</span>
+                    <span style="width: 80px">第{{ (item as NovelItemCache).chapter + 1 }}章</span>
+                    <span style="width: 80px">第{{ (item as NovelItemCache).line + 1 }}行</span>
                   </div>
                 </template>
                 <template v-if="key !=='last'" #suffix>
-                  <n-popconfirm @positive-click="onNovelDelete(item)" v-model:show="showTip[key]">
+                  <n-popconfirm @positive-click="onNovelDelete(item as string)" v-model:show="showTip[key]">
                     是否一并删除书籍
                     <template #trigger>
                       <n-button type="error" size="small">删除</n-button>
                     </template>
                     <template #action>
-                      <n-button size="small" type="error" @click="onNovelDelete(key, true)">是</n-button>
-                      <n-button size="small" @click="onNovelDelete(key, true)">否</n-button>
+                      <n-button size="small" type="error" @click="onNovelDelete(key as string, true)">是</n-button>
+                      <n-button size="small" @click="onNovelDelete(key as string, true)">否</n-button>
                       <n-button size="small" @click="showTip[key] = false">取消</n-button>
                     </template>
                   </n-popconfirm>
@@ -145,7 +145,7 @@ const state = reactive({
   isShowCache: false,
 })
 
-const showTip = ref({})
+const showTip = ref<Record<string, boolean>>({})
 
 const onConfirm = (part?: string, prop?: string) => {
   if (part && prop) {
@@ -178,7 +178,7 @@ const onItemClick = (type: string) => {
   }
 }
 
-const onNovelDelete = async (key: string, isDelete: boolean) => {
+const onNovelDelete = async (key: string, isDelete?: boolean) => {
   if (isDelete) {
     await invoke("remove", {path: (cacheData.value[key] as NovelItemCache).path})
   }
@@ -190,7 +190,7 @@ const onNovelDelete = async (key: string, isDelete: boolean) => {
   messageManager.success("删除成功")
   if (key === filename(cacheData.value['last'])) {
     cacheData.value['last'] = ""
-    emit("reload")
+    await emit("reload")
   }
   showTip.value[key] = false
 }
