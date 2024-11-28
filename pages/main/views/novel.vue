@@ -56,16 +56,16 @@ const move = async (dir: string) => {
   let origin = await window.outerPosition()
   switch (dir) {
     case "up":
-      window.setPosition({x: origin.x, y: origin.y - 1, type: origin.type})
+      await window.setPosition({x: origin.x, y: origin.y - 1, type: origin.type})
       break
     case "left":
-      window.setPosition({x: origin.x - 1, y: origin.y, type: origin.type})
+      await window.setPosition({x: origin.x - 1, y: origin.y, type: origin.type})
       break
     case "right":
-      window.setPosition({x: origin.x + 1, y: origin.y, type: origin.type})
+      await window.setPosition({x: origin.x + 1, y: origin.y, type: origin.type})
       break
     case "down":
-      window.setPosition({x: origin.x, y: origin.y + 1, type: origin.type})
+      await window.setPosition({x: origin.x, y: origin.y + 1, type: origin.type})
       break
     default:
       break
@@ -84,7 +84,7 @@ shortcutManager.on("prev", async () => {
     return
   }
   line.value = await novel.prev_line()
-  cacheManager.update(`novel.${file.value}`, {
+  await cacheManager.update(`novel.${file.value}`, {
     chapter: novel.chapter,
     line: novel.line,
   })
@@ -156,13 +156,13 @@ listen("select", async () => {
     regexp: configManager.get<string>("novel.regexp"),
   })
 
-  cacheManager.update(`novel.${file.value}`, {
+  await cacheManager.update(`novel.${file.value}`, {
     path: result.path,
     chapter: novel.chapter,
     line: novel.line,
   })
 
-  cacheManager.update(`novel`, {
+  await cacheManager.update(`novel`, {
     last: result.path,
   })
 })
